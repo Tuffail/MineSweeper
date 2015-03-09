@@ -24,7 +24,7 @@ public class GameWindow extends JFrame {
 	private boolean gameStarted;
 	private JMenuBar jmb;
 	private int[] difficulty;
-	private int gameDifficulty;
+	private int gameDifficulty = -1;
 	
 	public GameWindow(){
 		this.setLayout(new BorderLayout());
@@ -75,7 +75,7 @@ public class GameWindow extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (difficulty != null){
+				if (gameDifficulty != -1){
 					
 					if (gameDifficulty == 0) mineBoard = new MinesweeperBoard(9, 9, 10);
 					else if (gameDifficulty == 1) mineBoard = new MinesweeperBoard(16, 16, 40);
