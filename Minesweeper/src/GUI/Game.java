@@ -24,6 +24,12 @@ public class Game extends JPanel {
 	private boolean gameOver = false;
 	public Game(MinesweeperBoard m){
 		mineboard = m;
+		if (mineboard != null)
+			setupBoard();
+	}
+	
+	private void setupBoard(){
+		this.removeAll();
 		this.setLayout(new GridLayout(mineboard.getWidth(), mineboard.getHeight()));
 		panelHolder = new JPanel[mineboard.getWidth()][mineboard.getHeight()];
 		button = new MineButton[mineboard.getWidth()][mineboard.getHeight()];
@@ -123,6 +129,11 @@ public class Game extends JPanel {
 			}
 			
 		}
+	}
+	
+	public void setBoard(MinesweeperBoard m){
+		mineboard = m;
+		setupBoard();
 	}
 	
 }

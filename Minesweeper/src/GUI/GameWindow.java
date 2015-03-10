@@ -21,12 +21,11 @@ import Board.MinesweeperBoard;
 public class GameWindow extends JFrame {
 	
 	private MinesweeperBoard mineBoard;
-	private boolean gameStarted;
 	private JMenuBar jmb;
-	private int[] difficulty;
 	private int gameDifficulty = -1;
 	
-	public GameWindow(){
+	public GameWindow(MinesweeperBoard mBoard){
+		mineBoard = mBoard;
 		this.setLayout(new BorderLayout());
 		jmb = new JMenuBar();
 		JMenu setting = new JMenu("Settings");
@@ -39,17 +38,12 @@ public class GameWindow extends JFrame {
 		setting.add(medium);
 		setting.add(hard);
 		this.setJMenuBar(jmb);
-		gameStarted = false;
-		difficulty = new int[3];
-		for (int i = 0; i <  difficulty.length; ++i){
-			difficulty[i] = i;
-		}
 		
 		easy.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gameDifficulty = difficulty[0];
+				gameDifficulty = 1;
 			}
 		});
 		
@@ -57,7 +51,7 @@ public class GameWindow extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gameDifficulty = difficulty[1];
+				gameDifficulty = 2;
 			}
 		});
 		
@@ -65,7 +59,7 @@ public class GameWindow extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gameDifficulty = difficulty[2];
+				gameDifficulty = 3;
 			}
 		});
 		
@@ -77,18 +71,15 @@ public class GameWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (gameDifficulty != -1){
 					
-					if (gameDifficulty == 0) mineBoard = new MinesweeperBoard(9, 9, 10);
-					else if (gameDifficulty == 1) mineBoard = new MinesweeperBoard(16, 16, 40);
-					else if (gameDifficulty == 2) mineBoard = new MinesweeperBoard(30, 16, 99);
+					if (gameDifficulty == 1) mineBoard = new MinesweeperBoard(9, 9, 10);
+					else if (gameDifficulty == 2) mineBoard = new MinesweeperBoard(16, 16, 40);
+					else if (gameDifficulty == 3) mineBoard = new MinesweeperBoard(30, 16, 99);
 					
-					Game game = new Game(mineBoard);
-					JScrollPane jsp = new JScrollPane(game);
-					if (gameStarted) gamePanel.removeAll();
-					gamePanel.add(jsp);
-					GameWindow.this.add(gamePanel, BorderLayout.CENTER);
-					gameStarted = true;
-					GameWindow.this.repaint();
-					GameWindow.this.pack();
+					if (mineBoard != null){
+					GameWindow.this.dispose();
+					new GameWindow(mineBoard).setVisible(true);
+					}
+					
 				}else{
 					JOptionPane.showMessageDialog(getParent(), "Please select a difficuly first from the settings", "Please select difficulty", JOptionPane.ERROR_MESSAGE, null);
 				}
@@ -98,6 +89,10 @@ public class GameWindow extends JFrame {
 		JPanel jpNorth = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		jpNorth.add(jbNew);
 		
+		Game game = new Game(mineBoard);
+		JScrollPane jsp = new JScrollPane(game);
+		gamePanel.add(jsp);
+		GameWindow.this.add(jsp, BorderLayout.CENTER);
 		
 		this.add(jpNorth, BorderLayout.NORTH);
 		
